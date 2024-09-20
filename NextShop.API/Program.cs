@@ -42,6 +42,24 @@ namespace NextShop.API
 
             app.MapControllers();
 
+            #region 创建一个范围，再基于此范围注入数据库上下文和日志服务
+
+            var scope = app.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+            try
+            {
+                context.Database.Migrate();
+                DbInitializer.Initialize(context);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"An error occured => {ex.Message}");
+            }
+
+            #endregion
+
             app.Run();
         }
     }

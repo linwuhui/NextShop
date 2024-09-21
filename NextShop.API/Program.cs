@@ -17,8 +17,9 @@ namespace NextShop.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors();
 
-            #region DbContext Service
+            #region 注册数据库上下文服务
 
             builder.Services.AddDbContext<StoreContext>(option =>
             {
@@ -35,6 +36,16 @@ namespace NextShop.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            #region 允许http://127.0.0.1:3000的任何Http头部的任何方法访问服务器
+
+            app.UseCors(option =>
+            {
+                option.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://127.0.0.1:3000/");
+            });
+
+            #endregion
+
 
             app.UseHttpsRedirection();
 

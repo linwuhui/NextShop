@@ -37,11 +37,15 @@ namespace NextShop.API
                 app.UseSwaggerUI();
             }
 
-            #region 允许http://127.0.0.1:3000的任何Http头部的任何方法访问服务器
+            #region 允许http://127.0.0.1:3000的任何Http头部的任何方法访问服务器，SetIsOriginAllowed(origin => true)用于解除限制
 
             app.UseCors(option =>
             {
-                option.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://127.0.0.1:3000/");
+                option
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:3000/")
+                    .SetIsOriginAllowed(origin => true);
             });
 
             #endregion
